@@ -33,4 +33,4 @@ jobs:
         run: chmod +x gradlew
 
       - name: Print to console END
-        run: echo END(TODO release)
+        run: echo END TODO release

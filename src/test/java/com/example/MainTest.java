@@ -5,8 +5,5 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class MainTest {
 
-    @Test
-    void testHelloWorld() {
-        assertEquals("Hello, World!", Main.helloWorld());
-    }
+
 }

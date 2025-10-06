@@ -32,19 +32,19 @@ jobs:
             latest_tag=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
             echo "latest_tag=$latest_tag" >> $GITHUB_ENV
 
-            - name: Calculate next version
-              id: version
-              run: |
-                IFS='.' read -r major minor patch <<< "${latest_tag#v}"
-                patch=$((patch + 1))
-                new_tag="v$major.$minor.$patch"
-                echo "new_tag=$new_tag" >> $GITHUB_ENV
-                echo "Next version: $new_tag"
+      - name: Calculate next version
+        id: version
+        run: |
+          IFS='.' read -r major minor patch <<< "${latest_tag#v}"
+          patch=$((patch + 1))
+          new_tag="v$major.$minor.$patch"
+          echo "new_tag=$new_tag" >> $GITHUB_ENV
+          echo "Next version: $new_tag"
 
-            - name: Create new git tag
-              run: |
-                git tag $new_tag
-                git push origin $new_tag 
+      - name: Create new git tag
+        run: |
+          git tag $new_tag
+          git push origin $new_tag 
 
       - name: Set up Gradle
         uses: gradle/gradle-build-action@v2

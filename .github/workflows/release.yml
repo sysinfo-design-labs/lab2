@@ -51,6 +51,19 @@ jobs:
         with:
           gradle-version: '8.10'
 
+      - name: Get commit log
+        id: chengelog
+        run: |
+          git fetch --tags
+          if git rev-parse ${{ env.latest_tag }} >/dev/null 2>&1; then
+            log=$(git log ${{ env.latest_tag }}..HEAD --oneline)
+          else
+            log=$(git log --oneline)
+          fi
+          echo "log<<EOF" >> $GITHUB_ENV
+          echo "$log" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
@@ -59,9 +72,8 @@ jobs:
           body: |
             Автоматический релиз с ветки main.
             Коммиты с последнего тега:
-            ```
-            $(git log ${{ env.latest_tag }}..HEAD --oneline)
-            ```
+            
+            ${{ env.log }}
           files: build/libs/*.jar
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
